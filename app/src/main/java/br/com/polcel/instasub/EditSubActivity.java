@@ -1,19 +1,15 @@
 package br.com.polcel.instasub;
 
-import android.support.design.widget.BaseTransientBottomBar;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Locale;
 
 public class EditSubActivity extends AppCompatActivity {
 
@@ -25,78 +21,79 @@ public class EditSubActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_sub);
 
+        Toolbar editSubToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(editSubToolbar);
+
+        ActionBar editSubActionBar = getSupportActionBar();
+        editSubActionBar.setDisplayHomeAsUpEnabled(true);
+
         mEdtLegenda = (EditText) findViewById(R.id.edit_sub_edtLegenda);
         mEdtLegenda.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
-                if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+                if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
                     Toast.makeText(getApplicationContext(), "ENTER", Toast.LENGTH_SHORT).show();
-//
+
                     String current = mEdtLegenda.getText().toString();
 
                     current += "AEHO";
 
                     mEdtLegenda.setText(current);
                     mEdtLegenda.setSelection(mEdtLegenda.getText().length());
-
-                    //return false;
                 }
                 return false;
             }
         });
 
-//        mEdtLegenda.addTextChangedListener(new TextWatcher() {
-//
-//            int len=0;
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                String str = mEdtLegenda.getText().toString();
-//                if(str.length()==4&& len <str.length()){//len check for backspace
-//                    mEdtLegenda.append("-");
-//                }
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-////                Log.i("Text changed! ", "Enter pressed");
-////                Toast.makeText(getApplicationContext(), "Enter pressed!", Toast.LENGTH_SHORT).show();
-//
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                String str = mEdtLegenda.getText().toString();
-//                if(str.length()==4&& len <str.length()){//len check for backspace
-//                    mEdtLegenda.append("-");
-//                }
-//            }
-//        });
-//
-//        mEdtLegenda.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                String key = String.format(Locale.getDefault(), "Keycode: %s", keyCode);
-//
-//                if (keyCode == KeyEvent.KEYCODE_ENTER) {
-//                    Toast.makeText(getApplicationContext(), key, Toast.LENGTH_SHORT).show();
-//
-//                    String current = mEdtLegenda.getText().toString();
-//
-//                    current += "AEHO";
-//
-//                    mEdtLegenda.setText(current);
-//                    mEdtLegenda.setSelection(mEdtLegenda.getText().length());
-//
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            String legenda = mEdtLegenda.getText().toString();
+            if (!legenda.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Tinha texto! - onBackPressed", Toast.LENGTH_LONG).show();
+                return false;
+            } else {
+                Toast.makeText(getApplicationContext(), "Não tinha texto. Voltando! - onBackPressed", Toast.LENGTH_LONG).show();
+                onBackPressed();
+            }
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_save) {
+            Toast.makeText(getApplicationContext(), "Legenda salva com sucesso!", Toast.LENGTH_SHORT).show();
+
+            onBackPressed();
+            return true;
+        }
+
+        if (id == android.R.id.home) {
+            //alert perguntando se tem certeza que deseja descartar o texto
+            String legenda = mEdtLegenda.getText().toString();
+            if (!legenda.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Tinha texto! - onoptionselected", Toast.LENGTH_LONG).show();
+                return true;
+            } else {
+                Toast.makeText(getApplicationContext(), "Não tinha texto. Voltando! - onoptionselected", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
