@@ -8,4 +8,5 @@
     <color name="colorAddButton">#000000</color>
     <color  name="colorPrimaryText">#fff</color>
     <color name="colorBackground">#f2f2f2</color>
+    <color name="colorSubText">#777777</color>
 </resources>

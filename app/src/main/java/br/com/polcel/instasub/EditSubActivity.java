@@ -1,6 +1,8 @@
 package br.com.polcel.instasub;
 
+import android.content.DialogInterface;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +16,7 @@ import android.widget.Toast;
 public class EditSubActivity extends AppCompatActivity {
 
     EditText mEdtLegenda;
-    final String LINE_BREAK_CHAR = "";
+    final String LINE_BREAK_CHAR = "⠀⠀⠀";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +36,11 @@ public class EditSubActivity extends AppCompatActivity {
 
                 if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
-                    Toast.makeText(getApplicationContext(), "ENTER", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "ENTER", Toast.LENGTH_SHORT).show();
 
                     String current = mEdtLegenda.getText().toString();
 
-                    current += "AEHO";
+                    current += LINE_BREAK_CHAR;
 
                     mEdtLegenda.setText(current);
                     mEdtLegenda.setSelection(mEdtLegenda.getText().length());
@@ -54,10 +56,9 @@ public class EditSubActivity extends AppCompatActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             String legenda = mEdtLegenda.getText().toString();
             if (!legenda.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Tinha texto! - onBackPressed", Toast.LENGTH_LONG).show();
+                showConfirmDialog();
                 return false;
             } else {
-                Toast.makeText(getApplicationContext(), "Não tinha texto. Voltando! - onBackPressed", Toast.LENGTH_LONG).show();
                 onBackPressed();
             }
         }
@@ -76,24 +77,48 @@ public class EditSubActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_save) {
-            Toast.makeText(getApplicationContext(), "Legenda salva com sucesso!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.saved_sucessfuly, Toast.LENGTH_SHORT).show();
 
             onBackPressed();
             return true;
         }
 
         if (id == android.R.id.home) {
-            //alert perguntando se tem certeza que deseja descartar o texto
             String legenda = mEdtLegenda.getText().toString();
             if (!legenda.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Tinha texto! - onoptionselected", Toast.LENGTH_LONG).show();
+                showConfirmDialog();
                 return true;
             } else {
-                Toast.makeText(getApplicationContext(), "Não tinha texto. Voltando! - onoptionselected", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Não tinha texto. Voltando! - onoptionselected", Toast.LENGTH_LONG).show();
                 return false;
             }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showConfirmDialog() {
+        //melhorar. usar tema posteriormente
+        AlertDialog.Builder confirmDialogBuilder = new AlertDialog.Builder(this);
+        confirmDialogBuilder
+                .setTitle(R.string.message_modifications_cancel_title)
+                .setMessage(R.string.message_modifications_cancel);
+
+        confirmDialogBuilder.setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+
+        confirmDialogBuilder.setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        confirmDialogBuilder.create();
+        confirmDialogBuilder.show();
     }
 }

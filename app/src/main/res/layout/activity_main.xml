@@ -10,10 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        android:background="?attr/colorPrimary"
-        app:titleTextColor="@color/colorPrimaryText"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        style="@style/CustomToolBar" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
