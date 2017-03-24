@@ -1,6 +1,8 @@
 package br.com.polcel.instasub;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +15,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class EditSubActivity extends AppCompatActivity {
 
     EditText mEdtLegenda;
     final String LINE_BREAK_CHAR = "⠀⠀⠀";
+    InstaSubDbHelper mInstaSubDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +34,8 @@ public class EditSubActivity extends AppCompatActivity {
 
         ActionBar editSubActionBar = getSupportActionBar();
         editSubActionBar.setDisplayHomeAsUpEnabled(true);
+
+        mInstaSubDbHelper = new InstaSubDbHelper(getApplicationContext());
 
         mEdtLegenda = (EditText) findViewById(R.id.edit_sub_edtLegenda);
         mEdtLegenda.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -75,16 +83,31 @@ public class EditSubActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        String legenda = mEdtLegenda.getText().toString();
 
         if (id == R.id.action_save) {
             Toast.makeText(getApplicationContext(), R.string.saved_sucessfuly, Toast.LENGTH_SHORT).show();
+
+            SQLiteDatabase db = mInstaSubDbHelper.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(InstaSubContract.InstaSub.COLUMN_NAME_TITLE, "Legenda 01");
+            values.put(InstaSubContract.InstaSub.COLUMN_NAME_DESCRIPTION, legenda);
+
+            Calendar calendar = Calendar.getInstance();
+            //calendar.setTime((new SimpleDateFormat("dd/MM/yyyy")).parse(
+              //      binding.foundedEditText.getText().toString()));
+            long date = calendar.getTimeInMillis();
+
+            values.put(InstaSubContract.InstaSub.COLUMN_NAME_CREATED, date);
+
+            long newRowId = db.insert(InstaSubContract.InstaSub.TABLE_NAME, null, values);
 
             onBackPressed();
             return true;
         }
 
         if (id == android.R.id.home) {
-            String legenda = mEdtLegenda.getText().toString();
             if (!legenda.isEmpty()) {
                 showConfirmDialog();
                 return true;
@@ -95,6 +118,10 @@ public class EditSubActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void saveSubtitle() {
+
     }
 
     private void showConfirmDialog() {
