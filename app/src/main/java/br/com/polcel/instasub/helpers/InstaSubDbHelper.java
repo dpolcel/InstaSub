@@ -1,8 +1,10 @@
-package br.com.polcel.instasub;
+package br.com.polcel.instasub.helpers;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import br.com.polcel.instasub.contracts.InstaSubContract;
 
 /**
  * Created by polcel on 23/03/17.

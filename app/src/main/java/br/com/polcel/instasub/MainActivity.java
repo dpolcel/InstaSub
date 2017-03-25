@@ -6,14 +6,26 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import br.com.polcel.instasub.adapters.InstaSubsRecyclerViewCursorAdapter;
+import br.com.polcel.instasub.contracts.InstaSubContract;
+import br.com.polcel.instasub.helpers.InstaSubDbHelper;
+import br.com.polcel.instasub.models.Subtitle;
 
 public class MainActivity extends AppCompatActivity {
     InstaSubDbHelper mInstaSubDbHelper;
+    ArrayList<Subtitle>  mResults;
+    RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +44,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mInstaSubDbHelper = new InstaSubDbHelper(getApplicationContext());
+        mResults = new ArrayList<Subtitle>();
 
         readSubsDb();
     }
 
     public void readSubsDb() {
-        SQLiteDatabase db = mInstaSubDbHelper.getReadableDatabase();
+        SQLiteDatabase db = mInstaSubDbHelper.getWritableDatabase();
 
         String[] projection = {InstaSubContract.InstaSub._ID,
                 InstaSubContract.InstaSub.COLUMN_NAME_TITLE,
@@ -58,11 +71,42 @@ public class MainActivity extends AppCompatActivity {
                 null
         );
 
-        cursor.moveToFirst();
-        long itemId = cursor.getLong(
-                cursor.getColumnIndexOrThrow(InstaSubContract.InstaSub._ID)
-        );
+        if (cursor.moveToFirst()) {
 
+            do {
+                Long id = cursor.getLong(cursor.getColumnIndexOrThrow(InstaSubContract.InstaSub._ID));
+                String title = cursor.getString(cursor.getColumnIndexOrThrow(InstaSubContract.InstaSub.COLUMN_NAME_TITLE));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow(InstaSubContract.InstaSub.COLUMN_NAME_DESCRIPTION));
+                //Long created = cursor.getLong(cursor.getColumnIndexOrThrow(InstaSubContract.InstaSub.COLUMN_NAME_CREATED));
+
+                Subtitle subtitle = new Subtitle();
+                subtitle.setId(id);
+                subtitle.setTitle(title);
+                subtitle.setDescription(description);
+
+                mResults.add(subtitle);
+
+            }
+            while (cursor.moveToNext());
+        }
+
+        InstaSubsRecyclerViewCursorAdapter adapter = new InstaSubsRecyclerViewCursorAdapter(getApplicationContext(), mResults);
+
+        mRecyclerView = (RecyclerView)findViewById(R.id.rvSubtitles);
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+//        long itemId = cursor.getLong(
+//                cursor.getColumnIndexOrThrow(InstaSubContract.InstaSub._ID)
+//        );
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        readSubsDb();
     }
 
     @Override

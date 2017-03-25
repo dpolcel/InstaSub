@@ -1,4 +1,4 @@
-package br.com.polcel.instasub;
+package br.com.polcel.instasub.contracts;
 
 import android.provider.BaseColumns;
 

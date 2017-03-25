@@ -15,8 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import br.com.polcel.instasub.contracts.InstaSubContract;
+import br.com.polcel.instasub.helpers.InstaSubDbHelper;
 
 public class EditSubActivity extends AppCompatActivity {
 
@@ -100,6 +102,7 @@ public class EditSubActivity extends AppCompatActivity {
             long date = calendar.getTimeInMillis();
 
             values.put(InstaSubContract.InstaSub.COLUMN_NAME_CREATED, date);
+
 
             long newRowId = db.insert(InstaSubContract.InstaSub.TABLE_NAME, null, values);
 
