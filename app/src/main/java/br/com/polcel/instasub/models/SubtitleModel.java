@@ -1,6 +1,5 @@
 package br.com.polcel.instasub.models;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,22 +7,22 @@ import java.util.List;
  * Created by polcel on 24/03/17.
  */
 
-public class Subtitle {
+public class SubtitleModel {
 
     private Long mId;
     private String mTitle;
     private String mDescription;
     private Date mCreated;
     private Date mDeleted;
-    public static List<Subtitle> mSubtitleList;
+    public static List<SubtitleModel> mSubtitleModelList;
 
     public int lastSubtitleId = 0;
 
-    public Subtitle() {
+    public SubtitleModel() {
 
     }
 
-    public Subtitle(String title, String description, Date created, Date deleted) {
+    public SubtitleModel(String title, String description, Date created, Date deleted) {
         this.mTitle = title;
         this.mDescription = description;
         this.mCreated = created;

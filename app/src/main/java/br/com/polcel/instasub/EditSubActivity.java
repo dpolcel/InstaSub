@@ -29,7 +29,7 @@ public class EditSubActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_sub);
+        setContentView(R.layout.activity_edit_subtitle);
 
         Toolbar editSubToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(editSubToolbar);
@@ -88,25 +88,28 @@ public class EditSubActivity extends AppCompatActivity {
         String legenda = mEdtLegenda.getText().toString();
 
         if (id == R.id.action_save) {
-            Toast.makeText(getApplicationContext(), R.string.saved_sucessfuly, Toast.LENGTH_SHORT).show();
+            if (!legenda.isEmpty()) {
+                Toast.makeText(getApplicationContext(), R.string.saved_sucessfuly, Toast.LENGTH_SHORT).show();
 
-            SQLiteDatabase db = mInstaSubDbHelper.getWritableDatabase();
+                SQLiteDatabase db = mInstaSubDbHelper.getWritableDatabase();
+                //mInstaSubDbHelper.onUpgrade(db, 1, 2);
 
-            ContentValues values = new ContentValues();
-            values.put(InstaSubContract.InstaSub.COLUMN_NAME_TITLE, "Legenda 01");
-            values.put(InstaSubContract.InstaSub.COLUMN_NAME_DESCRIPTION, legenda);
+                ContentValues values = new ContentValues();
+                values.put(InstaSubContract.InstaSub.COLUMN_NAME_TITLE, "Legenda 01");
+                values.put(InstaSubContract.InstaSub.COLUMN_NAME_DESCRIPTION, legenda);
 
-            Calendar calendar = Calendar.getInstance();
-            //calendar.setTime((new SimpleDateFormat("dd/MM/yyyy")).parse(
-              //      binding.foundedEditText.getText().toString()));
-            long date = calendar.getTimeInMillis();
+                Calendar calendar = Calendar.getInstance();
+                //calendar.setTime((new SimpleDateFormat("dd/MM/yyyy")).parse(
+                //      binding.foundedEditText.getText().toString()));
+                long date = calendar.getTimeInMillis();
 
-            values.put(InstaSubContract.InstaSub.COLUMN_NAME_CREATED, date);
+                values.put(InstaSubContract.InstaSub.COLUMN_NAME_CREATED, date);
 
 
-            long newRowId = db.insert(InstaSubContract.InstaSub.TABLE_NAME, null, values);
+                long newRowId = db.insert(InstaSubContract.InstaSub.TABLE_NAME, null, values);
+            }
 
-            onBackPressed();
+            finish();
             return true;
         }
 

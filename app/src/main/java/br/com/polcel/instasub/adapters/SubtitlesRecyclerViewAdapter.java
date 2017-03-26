@@ -1,70 +1,62 @@
 package br.com.polcel.instasub.adapters;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 import br.com.polcel.instasub.R;
-import br.com.polcel.instasub.models.Subtitle;
+import br.com.polcel.instasub.models.SubtitleModel;
 
 /**
  * Created by polcel on 23/03/17.
  */
 
-public class InstaSubsRecyclerViewCursorAdapter extends RecyclerView.Adapter<InstaSubsRecyclerViewCursorAdapter.ViewHolder> {
+public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<SubtitlesRecyclerViewAdapter.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<Subtitle> mSubtitles;
+    private ArrayList<SubtitleModel> mSubtitleModels;
 
     private Context getContext() {
         return mContext;
     }
 
-    public InstaSubsRecyclerViewCursorAdapter(Context context, ArrayList<Subtitle> subtitles) {
+    public SubtitlesRecyclerViewAdapter(Context context, ArrayList<SubtitleModel> subtitles) {
         mContext = context;
-        mSubtitles = subtitles;
+        mSubtitleModels = subtitles;
     }
 
 
     @Override
-    public InstaSubsRecyclerViewCursorAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SubtitlesRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View subtitleView = inflater.inflate(R.layout.sub_list_item, parent, false);
+        View subtitleView = inflater.inflate(R.layout.activity_main_rv_subtitles_item, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(subtitleView);
-
-        return viewHolder;
+        return new ViewHolder(subtitleView);
     }
 
     @Override
-    public void onBindViewHolder(InstaSubsRecyclerViewCursorAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(SubtitlesRecyclerViewAdapter.ViewHolder holder, int position) {
 
-        Subtitle subtitle = mSubtitles.get(position);
+        SubtitleModel subtitleModel = mSubtitleModels.get(position);
 
         TextView titleTextView = holder.titleTextView;
-        titleTextView.setText(subtitle.getTitle());
+        titleTextView.setText(subtitleModel.getTitle());
 
         TextView descriptionTextView = holder.descriptionTextView;
-        descriptionTextView.setText(subtitle.getDescription());
+        descriptionTextView.setText(subtitleModel.getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return mSubtitles.size();
+        return mSubtitleModels.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -72,7 +64,7 @@ public class InstaSubsRecyclerViewCursorAdapter extends RecyclerView.Adapter<Ins
         public TextView titleTextView;
         public TextView descriptionTextView;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
 
             titleTextView = (TextView) view.findViewById(R.id.subtitle_title);

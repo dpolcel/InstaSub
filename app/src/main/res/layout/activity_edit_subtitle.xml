@@ -13,7 +13,22 @@
         android:theme="@style/CustomToolBar" />
 
     <!--app:subtitleTextColor="@color/secondary_text"-->
-    <include layout="@layout/content_edit_sub"/>
+    <EditText
+        android:id="@+id/edit_sub_et_subtitle"
+        style="@style/EditSubTheme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="60dp"
+        android:gravity="top"
+        android:hint="@string/hint_sub"
+        android:lines="1000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.design.widget.CoordinatorLayout>
 

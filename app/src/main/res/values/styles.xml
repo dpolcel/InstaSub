@@ -3,6 +3,7 @@
     <style name="CustomToolBar">
         <item name="android:background">@color/colorBar</item>
         <item name="titleTextColor">@color/colorPrimaryText</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="CustomTheme" parent="Theme.AppCompat.NoActionBar">
@@ -18,7 +19,9 @@
 
     <style name="SubListItem">
         <item name="android:textColor">@color/colorSubText</item>
+        <item name="android:textSize">24sp</item>
     </style>
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

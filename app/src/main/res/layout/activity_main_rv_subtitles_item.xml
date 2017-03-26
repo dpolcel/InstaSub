@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:layout_marginBottom="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/rv_subtitles_item_tv_subtitle_title"
+        style="SubListItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lorem Ipsum"
+        android:textColor="@color/colorSubText"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/rv_subtitles_item_tv_subtitle_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lorem Ipsum dolor sit amet. Consectetur adpsicing..."
+        android:textColor="@color/colorSubText" />
+
+    <TextView
+        android:id="@+id/rv_subtitles_item_tv_subtitle_created"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="25/03/2017"
+        android:textColor="@color/colorSubText" />
+
+</LinearLayout>

@@ -14,17 +14,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import br.com.polcel.instasub.adapters.InstaSubsRecyclerViewCursorAdapter;
+import br.com.polcel.instasub.adapters.SubtitlesRecyclerViewAdapter;
 import br.com.polcel.instasub.contracts.InstaSubContract;
 import br.com.polcel.instasub.helpers.InstaSubDbHelper;
-import br.com.polcel.instasub.models.Subtitle;
+import br.com.polcel.instasub.models.SubtitleModel;
 
 public class MainActivity extends AppCompatActivity {
     InstaSubDbHelper mInstaSubDbHelper;
-    ArrayList<Subtitle>  mResults;
+    ArrayList<SubtitleModel>  mResults;
     RecyclerView mRecyclerView;
 
     @Override
@@ -44,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mInstaSubDbHelper = new InstaSubDbHelper(getApplicationContext());
-        mResults = new ArrayList<Subtitle>();
+        mResults = new ArrayList<SubtitleModel>();
 
         readSubsDb();
     }
@@ -79,18 +77,18 @@ public class MainActivity extends AppCompatActivity {
                 String description = cursor.getString(cursor.getColumnIndexOrThrow(InstaSubContract.InstaSub.COLUMN_NAME_DESCRIPTION));
                 //Long created = cursor.getLong(cursor.getColumnIndexOrThrow(InstaSubContract.InstaSub.COLUMN_NAME_CREATED));
 
-                Subtitle subtitle = new Subtitle();
-                subtitle.setId(id);
-                subtitle.setTitle(title);
-                subtitle.setDescription(description);
+                SubtitleModel subtitleModel = new SubtitleModel();
+                subtitleModel.setId(id);
+                subtitleModel.setTitle(title);
+                subtitleModel.setDescription(description);
 
-                mResults.add(subtitle);
+                mResults.add(subtitleModel);
 
             }
             while (cursor.moveToNext());
         }
 
-        InstaSubsRecyclerViewCursorAdapter adapter = new InstaSubsRecyclerViewCursorAdapter(getApplicationContext(), mResults);
+        SubtitlesRecyclerViewAdapter adapter = new SubtitlesRecyclerViewAdapter(getApplicationContext(), mResults);
 
         mRecyclerView = (RecyclerView)findViewById(R.id.rvSubtitles);
         mRecyclerView.setAdapter(adapter);
@@ -106,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        mResults.clear();
         readSubsDb();
     }
 
