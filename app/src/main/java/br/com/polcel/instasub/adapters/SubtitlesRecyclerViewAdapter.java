@@ -1,35 +1,60 @@
 package br.com.polcel.instasub.adapters;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 import br.com.polcel.instasub.R;
+import br.com.polcel.instasub.contracts.InstaSubContract;
+import br.com.polcel.instasub.helpers.InstaSubDbHelper;
 import br.com.polcel.instasub.models.SubtitleModel;
+import br.com.polcel.instasub.utils.Tools;
 
 /**
  * Created by polcel on 23/03/17.
  */
 
 public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<SubtitlesRecyclerViewAdapter.ViewHolder> {
+    private static final int PENDING_REMOVAL_TIMEOUT = 3000; // 3sec
 
     private Context mContext;
     private ArrayList<SubtitleModel> mSubtitleModels;
+    List<SubtitleModel> itemsPendingRemoval;
+    boolean undoOn = true;
+    InstaSubDbHelper mInstaSubDbHelper;
+
+    private Handler handler = new Handler();
+    HashMap<SubtitleModel, Runnable> pendingRunnables = new HashMap<>();
+
+    public interface OnItemClickListener {
+        void onItemClick(SubtitleModel item);
+    }
+
+    private final OnItemClickListener listener;
 
     private Context getContext() {
         return mContext;
     }
 
-    public SubtitlesRecyclerViewAdapter(Context context, ArrayList<SubtitleModel> subtitles) {
+    public SubtitlesRecyclerViewAdapter(Context context, ArrayList<SubtitleModel> subtitles, OnItemClickListener listener) {
         mContext = context;
         mSubtitleModels = subtitles;
+        itemsPendingRemoval = new ArrayList<>();
+        this.listener = listener;
     }
-
 
     @Override
     public SubtitlesRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -44,14 +69,40 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
 
     @Override
     public void onBindViewHolder(SubtitlesRecyclerViewAdapter.ViewHolder holder, int position) {
+        final SubtitleModel subtitleModel = mSubtitleModels.get(position);
 
-        SubtitleModel subtitleModel = mSubtitleModels.get(position);
+        holder.bind(subtitleModel, listener);
 
-        TextView titleTextView = holder.titleTextView;
-        titleTextView.setText(subtitleModel.getTitle());
+        if (itemsPendingRemoval.contains(subtitleModel)) {
+            holder.itemView.setBackgroundColor(Color.RED);
 
-        TextView descriptionTextView = holder.descriptionTextView;
-        descriptionTextView.setText(subtitleModel.getDescription());
+            holder.titleTextView.setVisibility(View.GONE);
+            holder.createdTextView.setVisibility(View.GONE);
+            holder.dividerView.setVisibility(View.GONE);
+            holder.undoButton.setVisibility(View.VISIBLE);
+
+            holder.undoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Runnable pendingRemovalRunnable = pendingRunnables.get(subtitleModel);
+                    pendingRunnables.remove(subtitleModel);
+                    if (pendingRemovalRunnable != null)
+                        handler.removeCallbacks(pendingRemovalRunnable);
+                    itemsPendingRemoval.remove(subtitleModel);
+                    notifyItemChanged(mSubtitleModels.indexOf(subtitleModel));
+                }
+            });
+        } else {
+            holder.itemView.setBackgroundColor(Color.WHITE);
+            holder.titleTextView.setVisibility(View.VISIBLE);
+            holder.titleTextView.setText(subtitleModel.getTitle());
+            holder.descriptionTextView.setText(Tools.formatStringWithSeeMore(subtitleModel.getDescription()));
+            holder.dividerView.setVisibility(View.VISIBLE);
+            holder.createdTextView.setText(Tools.formatDateFromMillis("dd-MM-yyyy - HH:mm", subtitleModel.getCreated()));
+
+            holder.undoButton.setVisibility(View.GONE);
+            holder.undoButton.setOnClickListener(null);
+        }
     }
 
     @Override
@@ -59,16 +110,79 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
         return mSubtitleModels.size();
     }
 
+    public boolean isUndoOn() {
+        return undoOn;
+    }
+
+    public void pendingRemoval(int position) {
+        final SubtitleModel subtitle = mSubtitleModels.get(position);
+        if (!itemsPendingRemoval.contains(subtitle)) {
+            itemsPendingRemoval.add(subtitle);
+            // this will redraw row in "undo" state
+            notifyItemChanged(position);
+            // let's create, store and post a runnable to remove the item
+            Runnable pendingRemovalRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    remove(mSubtitleModels.indexOf(subtitle));
+                    Toast.makeText(mContext, "Item removed!", Toast.LENGTH_LONG).show();
+                }
+            };
+            handler.postDelayed(pendingRemovalRunnable, PENDING_REMOVAL_TIMEOUT);
+            pendingRunnables.put(subtitle, pendingRemovalRunnable);
+        }
+    }
+
+    public void remove(int position) {
+        SubtitleModel subtitle = mSubtitleModels.get(position);
+        if (itemsPendingRemoval.contains(subtitle)) {
+            itemsPendingRemoval.remove(subtitle);
+        }
+        if (mSubtitleModels.contains(subtitle)) {
+            mSubtitleModels.remove(position);
+
+            mInstaSubDbHelper = new InstaSubDbHelper(mContext);
+            SQLiteDatabase db = mInstaSubDbHelper.getWritableDatabase();
+
+            //remove item from Db
+            db.execSQL(String.format(Locale.getDefault(), InstaSubContract.InstaSub.SQL_DELETE_SUBTITLE, subtitle.getId()));
+
+            notifyItemRemoved(position);
+        }
+    }
+
+    public boolean isPendingRemoval(int position) {
+        SubtitleModel subtitle = mSubtitleModels.get(position);
+        return itemsPendingRemoval.contains(subtitle);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView titleTextView;
-        public TextView descriptionTextView;
+        TextView titleTextView;
+        TextView descriptionTextView;
+        TextView createdTextView;
+        Button undoButton;
+        View dividerView;
 
         ViewHolder(View view) {
             super(view);
 
-            titleTextView = (TextView) view.findViewById(R.id.subtitle_title);
-            descriptionTextView = (TextView) view.findViewById(R.id.subtitle_description);
+            titleTextView = (TextView) view.findViewById(R.id.rv_subtitles_item_tv_subtitle_title);
+            descriptionTextView = (TextView) view.findViewById(R.id.rv_subtitles_item_tv_subtitle_description);
+            createdTextView = (TextView) view.findViewById(R.id.rv_subtitles_item_tv_subtitle_created);
+            undoButton = (Button) view.findViewById(R.id.rv_subtitles_item_bt_undo);
+            dividerView = view.findViewById(R.id.rv_subtitles_item_vw_divider);
+        }
+
+        public void bind(final SubtitleModel subtitle, final OnItemClickListener listener) {
+            //  name.setText(item.name);
+            //Picasso.with(itemView.getContext()).load(item.imageUrl).into(image);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(subtitle);
+                }
+            });
         }
     }
 

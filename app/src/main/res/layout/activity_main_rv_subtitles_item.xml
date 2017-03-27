@@ -2,30 +2,63 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:layout_marginBottom="20dp"
-    android:orientation="vertical">
+    android:layout_marginBottom="1dp"
+    android:orientation="vertical"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp">
 
-    <TextView
-        android:id="@+id/rv_subtitles_item_tv_subtitle_title"
-        style="SubListItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lorem Ipsum"
-        android:textColor="@color/colorSubText"
-        android:textSize="24sp" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/rv_subtitles_item_tv_subtitle_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lorem Ipsum dolor sit amet. Consectetur adpsicing..."
-        android:textColor="@color/colorSubText" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/rv_subtitles_item_tv_subtitle_created"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="25/03/2017"
-        android:textColor="@color/colorSubText" />
+            <TextView
+                android:id="@+id/rv_subtitles_item_tv_subtitle_title"
+                style="SubListItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lorem Ipsum Dolor Sit Amet"
+                android:textColor="@color/colorSubText"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/rv_subtitles_item_tv_subtitle_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorSubText" />
+
+            <View
+                android:id="@+id/rv_subtitles_item_vw_divider"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/colorItemDivider" />
+
+            <TextView
+                android:id="@+id/rv_subtitles_item_tv_subtitle_created"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorSubText"
+                android:textSize="8sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/rv_subtitles_item_bt_undo"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|center_vertical"
+            android:text="DESFAZER"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white" />
+
+    </FrameLayout>
+
 
 </LinearLayout>

@@ -12,8 +12,8 @@ public class SubtitleModel {
     private Long mId;
     private String mTitle;
     private String mDescription;
-    private Date mCreated;
-    private Date mDeleted;
+    private Long mCreated;
+    private Long mDeleted;
     public static List<SubtitleModel> mSubtitleModelList;
 
     public int lastSubtitleId = 0;
@@ -22,7 +22,7 @@ public class SubtitleModel {
 
     }
 
-    public SubtitleModel(String title, String description, Date created, Date deleted) {
+    public SubtitleModel(String title, String description, Long created, Long deleted) {
         this.mTitle = title;
         this.mDescription = description;
         this.mCreated = created;
@@ -45,19 +45,19 @@ public class SubtitleModel {
         this.mDescription = description;
     }
 
-    public Date getCreated() {
+    public Long getCreated() {
         return mCreated;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(Long created) {
         this.mCreated = created;
     }
 
-    public Date getDeleted() {
+    public Long getDeleted() {
         return mDeleted;
     }
 
-    public void setDeleted(Date deleted) {
+    public void setDeleted(Long deleted) {
         this.mDeleted = deleted;
     }
 

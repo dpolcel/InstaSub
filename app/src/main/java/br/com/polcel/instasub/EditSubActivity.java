@@ -2,12 +2,16 @@ package br.com.polcel.instasub;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,15 +20,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import br.com.polcel.instasub.contracts.InstaSubContract;
 import br.com.polcel.instasub.helpers.InstaSubDbHelper;
+import br.com.polcel.instasub.models.SubtitleModel;
+import br.com.polcel.instasub.utils.Tools;
 
 public class EditSubActivity extends AppCompatActivity {
 
     EditText mEdtLegenda;
-    final String LINE_BREAK_CHAR = "⠀⠀⠀";
+    EditText mEdtTitle;
     InstaSubDbHelper mInstaSubDbHelper;
+    long mSubtitleId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +44,9 @@ public class EditSubActivity extends AppCompatActivity {
 
         ActionBar editSubActionBar = getSupportActionBar();
         editSubActionBar.setDisplayHomeAsUpEnabled(true);
+        mEdtTitle = (EditText) findViewById(R.id.activity_edit_sub_et_title);
 
-        mInstaSubDbHelper = new InstaSubDbHelper(getApplicationContext());
-
-        mEdtLegenda = (EditText) findViewById(R.id.edit_sub_edtLegenda);
+        mEdtLegenda = (EditText) findViewById(R.id.activity_edit_sub_et_subtitle);
         mEdtLegenda.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -50,7 +57,7 @@ public class EditSubActivity extends AppCompatActivity {
 
                     String current = mEdtLegenda.getText().toString();
 
-                    current += LINE_BREAK_CHAR;
+                    current += Tools.LINE_BREAK_CHAR;
 
                     mEdtLegenda.setText(current);
                     mEdtLegenda.setSelection(mEdtLegenda.getText().length());
@@ -59,6 +66,35 @@ public class EditSubActivity extends AppCompatActivity {
             }
         });
 
+        mInstaSubDbHelper = new InstaSubDbHelper(getApplicationContext());
+
+        Intent intent = getIntent();
+        mSubtitleId = intent.getLongExtra("subtitleId", 0);
+
+        SubtitleModel subtitle = new SubtitleModel();
+        if (mSubtitleId > 0) {
+            SQLiteDatabase db = mInstaSubDbHelper.getReadableDatabase();
+
+            String[] projection = {
+                    InstaSubContract.InstaSub._ID,
+                    InstaSubContract.InstaSub.COLUMN_NAME_TITLE,
+                    InstaSubContract.InstaSub.COLUMN_NAME_DESCRIPTION,
+                    InstaSubContract.InstaSub.COLUMN_NAME_CREATED
+            };
+
+            String selection = InstaSubContract.InstaSub.COLUMN_NAME_ID + " = ?";
+            String[] selectionArgs = {String.valueOf(mSubtitleId)};
+
+            Cursor cursor = db.query(InstaSubContract.InstaSub.TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+
+            if (cursor.moveToFirst()) {
+                subtitle.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(InstaSubContract.InstaSub.COLUMN_NAME_TITLE)));
+                subtitle.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(InstaSubContract.InstaSub.COLUMN_NAME_DESCRIPTION)));
+
+                mEdtTitle.setText(subtitle.getTitle());
+                mEdtLegenda.setText(subtitle.getDescription());
+            }
+        }
     }
 
     @Override
@@ -86,27 +122,12 @@ public class EditSubActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         String legenda = mEdtLegenda.getText().toString();
+        String titulo = mEdtTitle.getText().toString();
 
         if (id == R.id.action_save) {
             if (!legenda.isEmpty()) {
                 Toast.makeText(getApplicationContext(), R.string.saved_sucessfuly, Toast.LENGTH_SHORT).show();
-
-                SQLiteDatabase db = mInstaSubDbHelper.getWritableDatabase();
-                //mInstaSubDbHelper.onUpgrade(db, 1, 2);
-
-                ContentValues values = new ContentValues();
-                values.put(InstaSubContract.InstaSub.COLUMN_NAME_TITLE, "Legenda 01");
-                values.put(InstaSubContract.InstaSub.COLUMN_NAME_DESCRIPTION, legenda);
-
-                Calendar calendar = Calendar.getInstance();
-                //calendar.setTime((new SimpleDateFormat("dd/MM/yyyy")).parse(
-                //      binding.foundedEditText.getText().toString()));
-                long date = calendar.getTimeInMillis();
-
-                values.put(InstaSubContract.InstaSub.COLUMN_NAME_CREATED, date);
-
-
-                long newRowId = db.insert(InstaSubContract.InstaSub.TABLE_NAME, null, values);
+                saveSubtitle(legenda, titulo);
             }
 
             finish();
@@ -126,32 +147,64 @@ public class EditSubActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void saveSubtitle() {
+    private void saveSubtitle(String legenda, String titulo) {
+
+        SQLiteDatabase db = (mSubtitleId > 0) ? mInstaSubDbHelper.getReadableDatabase() : mInstaSubDbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(InstaSubContract.InstaSub.COLUMN_NAME_TITLE, titulo);
+        values.put(InstaSubContract.InstaSub.COLUMN_NAME_DESCRIPTION, legenda);
+
+        Calendar calendar = Calendar.getInstance();
+        long date = calendar.getTimeInMillis();
+
+        values.put(InstaSubContract.InstaSub.COLUMN_NAME_CREATED, date);
+
+        try {
+            if (mSubtitleId > 0) {
+
+                String selection = InstaSubContract.InstaSub.COLUMN_NAME_ID + " = ?";
+                String[] selectionArgs = {String.valueOf(mSubtitleId)};
+
+                int count = db.update(InstaSubContract.InstaSub.TABLE_NAME, values, selection, selectionArgs);
+
+                mSubtitleId = 0;
+            } else {
+                long newRowId = db.insertOrThrow(InstaSubContract.InstaSub.TABLE_NAME, null, values);
+            }
+        } catch (SQLiteException ex) {
+            Log.i(Tools.LOG_TAG, ex.getMessage());
+        }
 
     }
 
     private void showConfirmDialog() {
-        //melhorar. usar tema posteriormente
-        AlertDialog.Builder confirmDialogBuilder = new AlertDialog.Builder(this);
-        confirmDialogBuilder
-                .setTitle(R.string.message_modifications_cancel_title)
-                .setMessage(R.string.message_modifications_cancel);
+        //TODO: melhorar. usar tema posteriormente
+        if (mSubtitleId == 0) {
+            AlertDialog.Builder confirmDialogBuilder = new AlertDialog.Builder(this);
+            confirmDialogBuilder
+                    .setTitle(R.string.message_modifications_cancel_title)
+                    .setMessage(R.string.message_modifications_cancel);
 
-        confirmDialogBuilder.setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
+            confirmDialogBuilder.setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
 
-        confirmDialogBuilder.setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+            confirmDialogBuilder.setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
 
-        confirmDialogBuilder.create();
-        confirmDialogBuilder.show();
+            confirmDialogBuilder.create();
+            confirmDialogBuilder.show();
+        } else {
+            finish();
+        }
     }
 }
