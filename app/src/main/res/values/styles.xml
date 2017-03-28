@@ -2,8 +2,9 @@
 
     <style name="CustomToolBar">
         <item name="android:background">@color/colorBar</item>
-        <item name="titleTextColor">@color/colorPrimaryText</item>
+        <item name="titleTextColor">@color/colorSubTextTitle</item>
         <item name="android:gravity">center</item>
+
     </style>
 
     <style name="CustomTheme" parent="Theme.AppCompat.NoActionBar">
@@ -16,6 +17,12 @@
         <item name="android:textColor">@color/colorSubText</item>
         <item name="android:textColorHint">@color/colorSubText</item>
     </style>
+
+    <style name="EditSubThemeTitle">
+        <item name="android:textColor">@color/colorSubTextTitle</item>
+        <item name="android:textColorHint">@color/colorSubText</item>
+    </style>
+
 
     <style name="SubListItem">
         <item name="android:textColor">@color/colorSubText</item>

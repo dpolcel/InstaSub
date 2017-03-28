@@ -96,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(SubtitleModel item) {
 //                Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
+
+                //SubtitlesRecyclerViewAdapter.handler.removeCallbacks(SubtitlesRecyclerViewAdapter.pendingRunnables, PENDING_REMOVAL_TIMEOUT);
+
                 //start edit
                 Intent intent = new Intent(getApplicationContext(), EditSubActivity.class);
                 intent.putExtra("subtitleId", item.getId());

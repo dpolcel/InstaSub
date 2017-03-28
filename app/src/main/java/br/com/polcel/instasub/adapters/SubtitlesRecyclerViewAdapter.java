@@ -96,7 +96,8 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
             holder.itemView.setBackgroundColor(Color.WHITE);
             holder.titleTextView.setVisibility(View.VISIBLE);
             holder.titleTextView.setText(subtitleModel.getTitle());
-            holder.descriptionTextView.setText(Tools.formatStringWithSeeMore(subtitleModel.getDescription()));
+            holder.descriptionTextView.setText(subtitleModel.getDescription());
+//            holder.descriptionTextView.setText(Tools.formatStringWithSeeMore(subtitleModel.getDescription()));
             holder.dividerView.setVisibility(View.VISIBLE);
             holder.createdTextView.setText(Tools.formatDateFromMillis("dd-MM-yyyy - HH:mm", subtitleModel.getCreated()));
 

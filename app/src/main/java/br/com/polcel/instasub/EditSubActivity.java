@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +33,7 @@ public class EditSubActivity extends AppCompatActivity {
 
     EditText mEdtLegenda;
     EditText mEdtTitle;
+    TextView mTvAction;
     InstaSubDbHelper mInstaSubDbHelper;
     long mSubtitleId = 0;
 
@@ -44,6 +47,11 @@ public class EditSubActivity extends AppCompatActivity {
 
         ActionBar editSubActionBar = getSupportActionBar();
         editSubActionBar.setDisplayHomeAsUpEnabled(true);
+
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(getResources().getColor(R.color.colorBlack), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
         mEdtTitle = (EditText) findViewById(R.id.activity_edit_sub_et_title);
 
         mEdtLegenda = (EditText) findViewById(R.id.activity_edit_sub_et_subtitle);
@@ -52,7 +60,7 @@ public class EditSubActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
                 if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-
+                    int cursor =  mEdtLegenda.getSelectionStart();
                     //Toast.makeText(getApplicationContext(), "ENTER", Toast.LENGTH_SHORT).show();
 
                     String current = mEdtLegenda.getText().toString();
@@ -60,7 +68,7 @@ public class EditSubActivity extends AppCompatActivity {
                     current += Tools.LINE_BREAK_CHAR;
 
                     mEdtLegenda.setText(current);
-                    mEdtLegenda.setSelection(mEdtLegenda.getText().length());
+                    mEdtLegenda.setSelection(cursor);
                 }
                 return false;
             }
@@ -70,9 +78,11 @@ public class EditSubActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mSubtitleId = intent.getLongExtra("subtitleId", 0);
-
+        String actionDescription = "Adicionar Legenda";
         SubtitleModel subtitle = new SubtitleModel();
+
         if (mSubtitleId > 0) {
+            actionDescription = "Editar legenda";
             SQLiteDatabase db = mInstaSubDbHelper.getReadableDatabase();
 
             String[] projection = {
@@ -95,6 +105,9 @@ public class EditSubActivity extends AppCompatActivity {
                 mEdtLegenda.setText(subtitle.getDescription());
             }
         }
+
+        mTvAction = (TextView) findViewById(R.id.activity_edit_sub_tv_action);
+        mTvAction.setText(actionDescription);
     }
 
     @Override

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorBar">#000000</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorBar">#FFFFFF</color>
     <color name="colorBarTop">#777</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#ff4081</color>
-    <color name="colorAddButton">#000000</color>
+    <color name="colorAddButton">#0096ff</color>
     <color  name="colorPrimaryText">#fff</color>
-    <color name="colorBackground">#f2f2f2</color>
-    <color name="colorSubText">#777777</color>
+    <color name="colorBackground">#ffffff</color>
+    <color name="colorSubText">#CCCCCC</color>
+    <color name="colorSubText2">#777</color>
     <color name="colorItemDivider">#CCCCCC</color>
+    <color name="colorSubTextTitle">#000000</color>
+    <color name="colorSubTextDate">#0096ff</color>
 </resources>

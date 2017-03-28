@@ -9,21 +9,49 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:theme="@style/CustomToolBar" />
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:background="@drawable/border_shadow"
+        android:theme="@style/CustomToolBar" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/activity_edit_sub_tv_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Adicionar Legenda"
+                android:textAllCaps="true"
+                android:textColor="@color/colorSubTextTitle"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
 
     <EditText
         android:id="@+id/activity_edit_sub_et_title"
+        style="@style/EditSubThemeTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
         android:hint="@string/hint_sub_title"
-        android:maxLines="1"
         android:imeOptions="actionNext"
         android:maxLength="25"
-        style="@style/EditSubTheme"/>
+        android:maxLines="1"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:singleLine="true"
+        android:textSize="20sp"/>
 
     <EditText
         android:id="@+id/activity_edit_sub_et_subtitle"
+        style="@style/EditSubTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/activity_edit_sub_et_title"
@@ -31,7 +59,8 @@
         android:hint="@string/hint_sub"
         android:lines="1000"
         android:maxLength="2500"
-        style="@style/EditSubTheme"/>
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp" />
 
 </RelativeLayout>
 

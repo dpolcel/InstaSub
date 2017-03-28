@@ -21,7 +21,7 @@ public class InstaSubDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(InstaSubContract.InstaSub.SQL_CREATE_ENTRIES);
-        db.execSQL(InstaSubContract.InstaSub.SQL_CREATE_TEMP_TABLE);
+      //  db.execSQL(InstaSubContract.InstaSub.SQL_CREATE_TEMP_TABLE);
     }
 
     @Override

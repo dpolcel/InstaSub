@@ -11,26 +11,29 @@
         android:id="@+id/toolbar"
         style="@style/CustomToolBar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical">
 
-            <TextView
+            android:orientation="horizontal">
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="InstaSub"
-                android:textSize="24sp" />
+                android:src="@drawable/logo_toolbar" />
+
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/activity_main_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="68dp"
+        android:layout_height="69dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="@color/colorAddButton"
@@ -38,15 +41,12 @@
         app:srcCompat="@drawable/ic_add_white_48dp" />
 
     <android.support.v7.widget.RecyclerView
+        android:background="@drawable/border_shadow_first_row"
         android:id="@+id/activity_main_rv_subtitles"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="55dp"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@+id/parent"
-        app:layout_constraintTop_toTopOf="@+id/parent">
+        android:layout_marginTop="60dp"
+        android:scrollbars="vertical">
 
     </android.support.v7.widget.RecyclerView>
 

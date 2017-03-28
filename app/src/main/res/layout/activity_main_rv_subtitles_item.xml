@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:layout_marginBottom="1dp"
-    android:orientation="vertical"
-    android:paddingLeft="25dp"
-    android:paddingRight="25dp">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <!--<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+    <!--android:id="@+id/card_view"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:foreground="@android:color/transparent"-->
+    <!--card_view:cardBackgroundColor="#fefefe"-->
+    <!--card_view:cardUseCompatPadding="true">-->
+
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/border_shadow"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -21,14 +32,30 @@
                 style="SubListItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:padding="5dp"
                 android:text="Lorem Ipsum Dolor Sit Amet"
-                android:textColor="@color/colorSubText"
+                android:textAllCaps="true"
+                android:textColor="@color/colorSubTextTitle"
                 android:textSize="24sp" />
+
+            <View
+                android:id="@+id/rv_subtitles_item_vw_title_divider"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="2dp"
+                android:alpha=".25"
+                android:background="@color/colorItemDivider" />
 
             <TextView
                 android:id="@+id/rv_subtitles_item_tv_subtitle_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:padding="5dp"
+                android:maxLines="2"
+                android:text="Legenda número 1, teste aqui sor..."
                 android:textColor="@color/colorSubText" />
 
             <View
@@ -36,15 +63,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:layout_marginBottom="2dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="10dp"
+                android:alpha=".25"
                 android:background="@color/colorItemDivider" />
 
             <TextView
                 android:id="@+id/rv_subtitles_item_tv_subtitle_created"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorSubText"
-                android:textSize="8sp" />
+                android:layout_marginLeft="20dp"
+                android:padding="5dp"
+                android:text="23-03-2017 21:56"
+                android:textColor="@color/colorSubTextDate"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -54,11 +85,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end|center_vertical"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
             android:text="DESFAZER"
             android:textAllCaps="true"
             android:textColor="@android:color/white" />
 
     </FrameLayout>
 
-
+    <!--</android.support.v7.widget.CardView>-->
 </LinearLayout>
