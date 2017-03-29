@@ -2,8 +2,8 @@
     <string name="app_name">InstaSub</string>
     <string name="action_settings">Settings</string>
     <string name="action_save">Salvar</string>
-    <string name="hint_sub">Legenda...</string>
-    <string name="hint_sub_title">Insira um título</string>
+    <string name="hint_sub">COMECE A DIGITAR SUA LEGENDA</string>
+    <string name="hint_sub_title">INSIRA UM TÍTULO</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Cancelar</string>
     <string name="message_modifications_cancel_title">Você deseja realmente cancelar? </string>

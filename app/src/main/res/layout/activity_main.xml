@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f5f5f5"
     tools:context="br.com.polcel.instasub.MainActivity">
 
     <android.support.v7.widget.Toolbar
@@ -41,11 +42,13 @@
         app:srcCompat="@drawable/ic_add_white_48dp" />
 
     <android.support.v7.widget.RecyclerView
-        android:background="@drawable/border_shadow_first_row"
         android:id="@+id/activity_main_rv_subtitles"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="65dp"
         android:scrollbars="vertical">
 
     </android.support.v7.widget.RecyclerView>

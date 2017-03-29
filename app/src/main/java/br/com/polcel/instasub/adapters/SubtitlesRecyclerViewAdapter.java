@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Handler;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,10 +76,13 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
 
         if (itemsPendingRemoval.contains(subtitleModel)) {
             holder.itemView.setBackgroundColor(Color.RED);
+            holder.placeHolderCardView.setCardBackgroundColor(Color.RED);
 
             holder.titleTextView.setVisibility(View.GONE);
             holder.createdTextView.setVisibility(View.GONE);
-            holder.dividerView.setVisibility(View.GONE);
+            holder.titleDivider.setVisibility(View.GONE);
+            holder.dateDivider.setVisibility(View.GONE);
+            holder.descriptionTextView.setVisibility(View.GONE);
             holder.undoButton.setVisibility(View.VISIBLE);
 
             holder.undoButton.setOnClickListener(new View.OnClickListener() {
@@ -96,9 +100,11 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
             holder.itemView.setBackgroundColor(Color.WHITE);
             holder.titleTextView.setVisibility(View.VISIBLE);
             holder.titleTextView.setText(subtitleModel.getTitle());
+            holder.descriptionTextView.setVisibility(View.VISIBLE);
             holder.descriptionTextView.setText(subtitleModel.getDescription());
 //            holder.descriptionTextView.setText(Tools.formatStringWithSeeMore(subtitleModel.getDescription()));
-            holder.dividerView.setVisibility(View.VISIBLE);
+            holder.titleDivider.setVisibility(View.VISIBLE);
+            holder.dateDivider.setVisibility(View.VISIBLE);
             holder.createdTextView.setText(Tools.formatDateFromMillis("dd-MM-yyyy - HH:mm", subtitleModel.getCreated()));
 
             holder.undoButton.setVisibility(View.GONE);
@@ -146,7 +152,7 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
             SQLiteDatabase db = mInstaSubDbHelper.getWritableDatabase();
 
             //remove item from Db
-            db.execSQL(String.format(Locale.getDefault(), InstaSubContract.InstaSub.SQL_DELETE_SUBTITLE, subtitle.getId()));
+           // db.execSQL(String.format(Locale.getDefault(), InstaSubContract.InstaSub.SQL_DELETE_SUBTITLE, subtitle.getId()));
 
             notifyItemRemoved(position);
         }
@@ -163,7 +169,9 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
         TextView descriptionTextView;
         TextView createdTextView;
         Button undoButton;
-        View dividerView;
+        View titleDivider;
+        View dateDivider;
+        CardView placeHolderCardView;
 
         ViewHolder(View view) {
             super(view);
@@ -172,7 +180,9 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
             descriptionTextView = (TextView) view.findViewById(R.id.rv_subtitles_item_tv_subtitle_description);
             createdTextView = (TextView) view.findViewById(R.id.rv_subtitles_item_tv_subtitle_created);
             undoButton = (Button) view.findViewById(R.id.rv_subtitles_item_bt_undo);
-            dividerView = view.findViewById(R.id.rv_subtitles_item_vw_divider);
+            titleDivider = view.findViewById(R.id.rv_subtitles_item_vw_title_divider);
+            dateDivider = view.findViewById(R.id.rv_subtitles_item_vw_date_divider);
+            placeHolderCardView = (CardView)view.findViewById(R.id.rv_subtitles_item_cv_subtitle);
         }
 
         public void bind(final SubtitleModel subtitle, final OnItemClickListener listener) {

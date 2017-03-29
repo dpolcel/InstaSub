@@ -2,7 +2,7 @@
 
     <style name="CustomToolBar">
         <item name="android:background">@color/colorBar</item>
-        <item name="titleTextColor">@color/colorSubTextTitle</item>
+        <item name="titleTextColor">@color/colorSubTextDate</item>
         <item name="android:gravity">center</item>
 
     </style>

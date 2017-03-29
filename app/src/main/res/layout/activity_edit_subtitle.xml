@@ -46,15 +46,24 @@
         android:maxLines="1"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
-        android:singleLine="true"
         android:textSize="20sp"/>
+
+    <View
+        android:id="@+id/activity_edit_sub_vw_title_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="2dp"
+        android:alpha=".25"
+        android:layout_below="@+id/activity_edit_sub_et_title"
+        android:background="@color/colorItemDivider" />
 
     <EditText
         android:id="@+id/activity_edit_sub_et_subtitle"
         style="@style/EditSubTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/activity_edit_sub_et_title"
+        android:layout_below="@+id/activity_edit_sub_vw_title_divider"
         android:gravity="top"
         android:hint="@string/hint_sub"
         android:lines="1000"
