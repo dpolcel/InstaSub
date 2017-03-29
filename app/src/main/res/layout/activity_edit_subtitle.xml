@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="br.com.polcel.instasub.MainActivity">
+
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/border_shadow"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
-        android:background="@drawable/border_shadow"
-        android:theme="@style/CustomToolBar" >
+        android:theme="@style/CustomToolBar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,7 +34,7 @@
 
         </LinearLayout>
 
-        </android.support.v7.widget.Toolbar>
+    </android.support.v7.widget.Toolbar>
 
 
     <EditText
@@ -46,16 +49,16 @@
         android:maxLines="1"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
 
     <View
         android:id="@+id/activity_edit_sub_vw_title_divider"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
+        android:layout_below="@+id/activity_edit_sub_et_title"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="2dp"
         android:alpha=".25"
-        android:layout_below="@+id/activity_edit_sub_et_title"
         android:background="@color/colorItemDivider" />
 
     <EditText
@@ -70,6 +73,41 @@
         android:maxLength="2500"
         android:paddingLeft="25dp"
         android:paddingRight="25dp" />
+
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/multiple_actions"
+        android:layout_width="wrap_content"
+        android:layout_height="69dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        fab:fabSize="normal"
+        fab:fab_addButtonColorNormal="@color/colorAddButton"
+        fab:fab_addButtonColorPressed="@color/white_pressed"
+        fab:fab_addButtonPlusIconColor="@color/white"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        fab:srcCompat="@drawable/ic_add_white_48dp">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/white"
+            fab:fab_colorPressed="@color/white_pressed"
+            fab:fab_title="ABRIR INSTAGRAM" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/white"
+            fab:fab_colorPressed="@color/white_pressed"
+            fab:fab_title="COPIAR LEGENDA" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </RelativeLayout>
 
