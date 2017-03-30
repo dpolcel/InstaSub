@@ -10,7 +10,7 @@
     <string name="action_cancel">Cancel</string>
     <string name="message_modifications_cancel_title">Do you really want to cancel?</string>
     <string name="message_modifications_cancel">You have unsaved modifications. If you confirm, you will lose your subtitle.</string>
-    <string name="message_no_data_available">There are no subtitles yet. Click on the \"+\" icon! :)</string>
+    <string name="message_no_data_available">There are no subtitles yet. Click on the \"+\" icon!</string>
     <string name="saved_sucessfuly">Subtitle saved successfully!</string>
     <string name="action_open_instagram">OPEN INSTAGARM</string>
     <string name="action_copy_content">COPY SUBTITLE</string>

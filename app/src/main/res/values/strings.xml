@@ -8,7 +8,7 @@
     <string name="hint_sub_title">INSIRA UM TÍTULO</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Cancelar</string>
-    <string name="message_no_data_available">Não há legendas cadastradas. Clique no ícone \"+\" ! :)</string>
+    <string name="message_no_data_available">Não há legendas cadastradas. Clique no ícone \"+\" !</string>
     <string name="message_modifications_cancel_title">Você deseja realmente cancelar? </string>
     <string name="message_modifications_cancel">Você tem alterações não salvas. Se você confirmar, você perderá sua legenda!</string>
     <string name="saved_sucessfuly">Legenda salva com sucesso!</string>
