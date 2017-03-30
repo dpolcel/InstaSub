@@ -19,6 +19,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -27,11 +28,13 @@ import br.com.polcel.instasub.adapters.SubtitlesRecyclerViewAdapter;
 import br.com.polcel.instasub.contracts.InstaSubContract;
 import br.com.polcel.instasub.helpers.InstaSubDbHelper;
 import br.com.polcel.instasub.models.SubtitleModel;
+import br.com.polcel.instasub.utils.Tools;
 
 public class MainActivity extends AppCompatActivity {
     InstaSubDbHelper mInstaSubDbHelper;
     ArrayList<SubtitleModel> mResults;
     RecyclerView mRecyclerView;
+    TextView mEmptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        mEmptyView = (TextView) findViewById(R.id.activity_main_tv_empty_view);
+        mRecyclerView = (RecyclerView) findViewById(R.id.activity_main_rv_subtitles);
+
         mInstaSubDbHelper = new InstaSubDbHelper(getApplicationContext());
         mResults = new ArrayList<SubtitleModel>();
 
@@ -92,6 +99,14 @@ public class MainActivity extends AppCompatActivity {
             while (cursor.moveToNext());
         }
 
+        if (mResults.isEmpty()) {
+            mEmptyView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        } else {
+            mEmptyView.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
+
         SubtitlesRecyclerViewAdapter adapter = new SubtitlesRecyclerViewAdapter(getApplicationContext(), mResults, new SubtitlesRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(SubtitleModel item) {
@@ -101,13 +116,12 @@ public class MainActivity extends AppCompatActivity {
 
                 //start edit
                 Intent intent = new Intent(getApplicationContext(), EditSubActivity.class);
-                intent.putExtra("subtitleId", item.getId());
+                intent.putExtra(Tools.SUBTITLE_INTENT_PARAMETER, item.getId());
 
                 startActivity(intent);
             }
         });
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.activity_main_rv_subtitles);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

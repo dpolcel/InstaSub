@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">InstaSub</string>
+    <string name="activity_edit_create">Add Subtitle</string>
+    <string name="activity_edit_edit">Edit Subtitle</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_save">Save</string>
+    <string name="hint_sub">START TYPING YOUR SUBTITLE</string>
+    <string name="hint_sub_title">INSERT A TITLE</string>
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="message_modifications_cancel_title">Do you really want to cancel?</string>
+    <string name="message_modifications_cancel">You have unsaved modifications. If you confirm, you will lose your subtitle.</string>
+    <string name="message_no_data_available">There are no subtitles yet. Click on the \"+\" icon! :)</string>
+    <string name="saved_sucessfuly">Subtitle saved successfully!</string>
+    <string name="action_open_instagram">OPEN INSTAGARM</string>
+    <string name="action_copy_content">COPY SUBTITLE</string>
+    <string name="action_content_copied">Subtitle copied to clipboard.</string>
+</resources>

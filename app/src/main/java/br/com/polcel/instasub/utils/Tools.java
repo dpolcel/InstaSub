@@ -12,6 +12,9 @@ public class Tools {
 
     public static final String LOG_TAG = "INSTA_SUB_LOG";
     public static final String LINE_BREAK_CHAR = "⠀⠀⠀";
+    public static final String INSTAGRAM_PACKAGE_NAME = "com.instagram.android";
+    public static final String CLIPBOARD_PARAMETER_NAME = "InstaSubText";
+    public static final String SUBTITLE_INTENT_PARAMETER = "subtitleId";
 
     public static String formatDateFromMillis(String dateFormat, long dateInMillis) {
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormat, Locale.getDefault());

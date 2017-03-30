@@ -1,6 +1,10 @@
 package br.com.polcel.instasub;
 
+import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,9 +22,12 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -36,6 +44,8 @@ public class EditSubActivity extends AppCompatActivity {
     TextView mTvAction;
     InstaSubDbHelper mInstaSubDbHelper;
     long mSubtitleId = 0;
+    FloatingActionButton mActionOpenInstagram;
+    FloatingActionButton mActionCopyContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +62,7 @@ public class EditSubActivity extends AppCompatActivity {
         upArrow.setColorFilter(getResources().getColor(R.color.colorBlack), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
+
         mEdtTitle = (EditText) findViewById(R.id.activity_edit_sub_et_title);
 
         mEdtLegenda = (EditText) findViewById(R.id.activity_edit_sub_et_subtitle);
@@ -60,7 +71,7 @@ public class EditSubActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
                 if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    int cursor =  mEdtLegenda.getSelectionStart();
+                    int cursor = mEdtLegenda.getSelectionStart();
                     //Toast.makeText(getApplicationContext(), "ENTER", Toast.LENGTH_SHORT).show();
 
                     String current = mEdtLegenda.getText().toString();
@@ -74,15 +85,39 @@ public class EditSubActivity extends AppCompatActivity {
             }
         });
 
+
+        mActionOpenInstagram = (FloatingActionButton) findViewById(R.id.activity_edit_sub_fab_open_instagram);
+        mActionOpenInstagram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent launchIntent = getPackageManager().getLaunchIntentForPackage(Tools.INSTAGRAM_PACKAGE_NAME);
+                if (launchIntent != null) {
+                    startActivity(launchIntent);
+                }
+            }
+        });
+
+        mActionCopyContent = (FloatingActionButton) findViewById(R.id.activity_edit_sub_fab_copy_content);
+        mActionCopyContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), R.string.action_content_copied, Toast.LENGTH_SHORT).show();
+
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText(Tools.CLIPBOARD_PARAMETER_NAME, mEdtLegenda.getText().toString());
+                clipboard.setPrimaryClip(clip);
+            }
+        });
+
         mInstaSubDbHelper = new InstaSubDbHelper(getApplicationContext());
 
         Intent intent = getIntent();
-        mSubtitleId = intent.getLongExtra("subtitleId", 0);
-        String actionDescription = "Adicionar Legenda";
+        mSubtitleId = intent.getLongExtra(Tools.SUBTITLE_INTENT_PARAMETER, 0);
+        String actionDescription = getString(R.string.activity_edit_create);
         SubtitleModel subtitle = new SubtitleModel();
 
         if (mSubtitleId > 0) {
-            actionDescription = "Editar legenda";
+            actionDescription = getString(R.string.activity_edit_edit);
             SQLiteDatabase db = mInstaSubDbHelper.getReadableDatabase();
 
             String[] projection = {

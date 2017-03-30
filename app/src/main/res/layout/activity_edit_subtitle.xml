@@ -27,7 +27,7 @@
                 android:id="@+id/activity_edit_sub_tv_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Adicionar Legenda"
+                android:text="@string/activity_edit_create"
                 android:textAllCaps="true"
                 android:textColor="@color/colorSubTextTitle"
                 android:textSize="22sp" />
@@ -92,20 +92,24 @@
         fab:srcCompat="@drawable/ic_add_white_48dp">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_a"
+            android:id="@+id/activity_edit_sub_fab_open_instagram"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/white"
             fab:fab_colorPressed="@color/white_pressed"
-            fab:fab_title="ABRIR INSTAGRAM" />
+            fab:fab_icon="@drawable/ic_instagram_icon"
+            fab:fab_size="normal"
+            fab:fab_title="@string/action_open_instagram" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_b"
+            android:id="@+id/activity_edit_sub_fab_copy_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/white"
             fab:fab_colorPressed="@color/white_pressed"
-            fab:fab_title="COPIAR LEGENDA" />
+            fab:fab_icon="@drawable/ic_copy_icon"
+            fab:fab_size="normal"
+            fab:fab_title="@string/action_copy_content" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

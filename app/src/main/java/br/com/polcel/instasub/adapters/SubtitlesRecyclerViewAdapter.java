@@ -132,7 +132,6 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
                 @Override
                 public void run() {
                     remove(mSubtitleModels.indexOf(subtitle));
-                    Toast.makeText(mContext, "Item removed!", Toast.LENGTH_LONG).show();
                 }
             };
             handler.postDelayed(pendingRemovalRunnable, PENDING_REMOVAL_TIMEOUT);
@@ -152,7 +151,7 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
             SQLiteDatabase db = mInstaSubDbHelper.getWritableDatabase();
 
             //remove item from Db
-           // db.execSQL(String.format(Locale.getDefault(), InstaSubContract.InstaSub.SQL_DELETE_SUBTITLE, subtitle.getId()));
+            db.execSQL(String.format(Locale.getDefault(), InstaSubContract.InstaSub.SQL_DELETE_SUBTITLE, subtitle.getId()));
 
             notifyItemRemoved(position);
         }
@@ -182,7 +181,7 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
             undoButton = (Button) view.findViewById(R.id.rv_subtitles_item_bt_undo);
             titleDivider = view.findViewById(R.id.rv_subtitles_item_vw_title_divider);
             dateDivider = view.findViewById(R.id.rv_subtitles_item_vw_date_divider);
-            placeHolderCardView = (CardView)view.findViewById(R.id.rv_subtitles_item_cv_subtitle);
+            placeHolderCardView = (CardView) view.findViewById(R.id.rv_subtitles_item_cv_subtitle);
         }
 
         public void bind(final SubtitleModel subtitle, final OnItemClickListener listener) {
