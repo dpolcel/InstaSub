@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">InstaSub</string>
+    <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <string name="banner_ad_unit_id">ca-app-pub-8857467491989225/4974965994</string>
     <string name="activity_edit_create">Adicionar Legenda</string>
     <string name="activity_edit_edit">Editar Legenda</string>
     <string name="action_settings">Settings</string>

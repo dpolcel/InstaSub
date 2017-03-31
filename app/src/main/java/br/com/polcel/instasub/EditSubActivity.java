@@ -72,14 +72,7 @@ public class EditSubActivity extends AppCompatActivity {
 
                 if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                     int cursor = mEdtLegenda.getSelectionStart();
-                    //Toast.makeText(getApplicationContext(), "ENTER", Toast.LENGTH_SHORT).show();
-
-                    String current = mEdtLegenda.getText().toString();
-
-                    current += Tools.LINE_BREAK_CHAR;
-
-                    mEdtLegenda.setText(current);
-                    mEdtLegenda.setSelection(cursor);
+                    mEdtLegenda.getText().insert(cursor, Tools.LINE_BREAK_CHAR);
                 }
                 return false;
             }

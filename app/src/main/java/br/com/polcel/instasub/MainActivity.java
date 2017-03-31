@@ -22,6 +22,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.util.ArrayList;
 
 import br.com.polcel.instasub.adapters.SubtitlesRecyclerViewAdapter;
@@ -35,11 +38,17 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<SubtitleModel> mResults;
     RecyclerView mRecyclerView;
     TextView mEmptyView;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mAdView = (AdView) findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder().addTestDevice("913D7E78840ADA6B5C31BB79DDEDE9E0").build();
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
