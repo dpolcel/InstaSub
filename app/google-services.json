@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1027005033491",
+    "firebase_url": "https://instasub-699aa.firebaseio.com",
+    "project_id": "instasub-699aa",
+    "storage_bucket": "instasub-699aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027005033491:android:731c447628c4fda6",
+        "android_client_info": {
+          "package_name": "br.com.polcel.instasub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027005033491-0tlieudk2es0a4revg9jio7gjc9e12id.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.polcel.instasub",
+            "certificate_hash": "3b7e1b9301ca061fab620241352c85badf958542"
+          }
+        },
+        {
+          "client_id": "1027005033491-0o3n9mvmguo5v6ja6retsptp91mjigqg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH8WS8fo9WvNdlFIYESMgVvRz1A1m1cLo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027005033491-0o3n9mvmguo5v6ja6retsptp91mjigqg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
