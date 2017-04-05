@@ -1,6 +1,8 @@
 package br.com.polcel.instasub;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
@@ -11,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -68,14 +71,11 @@ public class MainActivity extends AppCompatActivity {
         mInstaSubDbHelper = new InstaSubDbHelper(getApplicationContext());
         mResults = new ArrayList<SubtitleModel>();
 
-        readSubsDb();
+        readSubsDb(true);
     }
 
-    public void readSubsDb() {
+    public void readSubsDb(boolean showHelp) {
         SQLiteDatabase db = mInstaSubDbHelper.getWritableDatabase();
-
-//        db.execSQL(InstaSubContract.InstaSub.SQL_DELETE_ENTRIES);
-//        mInstaSubDbHelper.onUpgrade(db, 1, 2);
 
         String[] projection = {
                 InstaSubContract.InstaSub._ID,
@@ -112,6 +112,16 @@ public class MainActivity extends AppCompatActivity {
             mEmptyView.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
         } else {
+
+            if(showHelp) {
+                SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+                int isDismissed = preferences.getInt(Tools.SHARED_PREF_HOW_TO_DELETE_DISMISSED, 0);
+
+                if (isDismissed == 0) {
+                    showHelpDialog();
+                }
+            }
+
             mEmptyView.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.VISIBLE);
         }
@@ -119,9 +129,9 @@ public class MainActivity extends AppCompatActivity {
         SubtitlesRecyclerViewAdapter adapter = new SubtitlesRecyclerViewAdapter(getApplicationContext(), mResults, new SubtitlesRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(SubtitleModel item) {
-//                Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
 
-                //SubtitlesRecyclerViewAdapter.handler.removeCallbacks(SubtitlesRecyclerViewAdapter.pendingRunnables, PENDING_REMOVAL_TIMEOUT);
+                SubtitlesRecyclerViewAdapter adapter = (SubtitlesRecyclerViewAdapter) mRecyclerView.getAdapter();
+                adapter.stopRemovalRunnable(item);
 
                 //start edit
                 Intent intent = new Intent(getApplicationContext(), EditSubActivity.class);
@@ -137,6 +147,34 @@ public class MainActivity extends AppCompatActivity {
 
         setUpItemTouchHelper();
         setUpAnimationDecoratorHelper();
+    }
+
+    public void showHelpDialog() {
+        AlertDialog.Builder confirmDialogBuilder = new AlertDialog.Builder(this);
+        confirmDialogBuilder
+                .setTitle(R.string.message_tip)
+                .setMessage(R.string.message_tip_delete_message);
+
+        confirmDialogBuilder.setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //save sharedpreferences
+                SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putInt(Tools.SHARED_PREF_HOW_TO_DELETE_DISMISSED, 1);
+                editor.apply();
+            }
+        });
+
+        confirmDialogBuilder.setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        confirmDialogBuilder.create();
+        confirmDialogBuilder.show();
     }
 
     /**
@@ -318,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         mResults.clear();
-        readSubsDb();
+        readSubsDb(false);
     }
 
     @Override

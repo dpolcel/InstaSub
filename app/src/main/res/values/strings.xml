@@ -10,6 +10,8 @@
     <string name="hint_sub_title">INSIRA UM TÍTULO</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Cancelar</string>
+    <string name="message_tip">Dica</string>
+    <string name="message_tip_delete_message">Arraste para a esquerda, para deletar uma legenda.</string>
     <string name="message_no_data_available">Não há legendas cadastradas. Clique no ícone \"+\" !</string>
     <string name="message_modifications_cancel_title">Você deseja realmente cancelar? </string>
     <string name="message_modifications_cancel">Você tem alterações não salvas. Se você confirmar, você perderá sua legenda!</string>

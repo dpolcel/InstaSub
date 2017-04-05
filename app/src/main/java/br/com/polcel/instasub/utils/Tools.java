@@ -15,6 +15,7 @@ public class Tools {
     public static final String INSTAGRAM_PACKAGE_NAME = "com.instagram.android";
     public static final String CLIPBOARD_PARAMETER_NAME = "InstaSubText";
     public static final String SUBTITLE_INTENT_PARAMETER = "subtitleId";
+    public static final String SHARED_PREF_HOW_TO_DELETE_DISMISSED = "howToDeleteDismissed";
 
     public static String formatDateFromMillis(String dateFormat, long dateInMillis) {
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormat, Locale.getDefault());

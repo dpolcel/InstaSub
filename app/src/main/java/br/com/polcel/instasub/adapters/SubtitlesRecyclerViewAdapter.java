@@ -102,7 +102,6 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
             holder.titleTextView.setText(subtitleModel.getTitle());
             holder.descriptionTextView.setVisibility(View.VISIBLE);
             holder.descriptionTextView.setText(subtitleModel.getDescription());
-//            holder.descriptionTextView.setText(Tools.formatStringWithSeeMore(subtitleModel.getDescription()));
             holder.titleDivider.setVisibility(View.VISIBLE);
             holder.dateDivider.setVisibility(View.VISIBLE);
             holder.createdTextView.setText(Tools.formatDateFromMillis("dd-MM-yyyy - HH:mm", subtitleModel.getCreated()));
@@ -125,9 +124,7 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
         final SubtitleModel subtitle = mSubtitleModels.get(position);
         if (!itemsPendingRemoval.contains(subtitle)) {
             itemsPendingRemoval.add(subtitle);
-            // this will redraw row in "undo" state
             notifyItemChanged(position);
-            // let's create, store and post a runnable to remove the item
             Runnable pendingRemovalRunnable = new Runnable() {
                 @Override
                 public void run() {
@@ -137,6 +134,15 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
             handler.postDelayed(pendingRemovalRunnable, PENDING_REMOVAL_TIMEOUT);
             pendingRunnables.put(subtitle, pendingRemovalRunnable);
         }
+    }
+
+    public void stopRemovalRunnable(SubtitleModel subtitleModel) {
+        Runnable pendingRemovalRunnable = pendingRunnables.get(subtitleModel);
+        pendingRunnables.remove(subtitleModel);
+        if (pendingRemovalRunnable != null)
+            handler.removeCallbacks(pendingRemovalRunnable);
+        itemsPendingRemoval.remove(subtitleModel);
+        notifyItemChanged(mSubtitleModels.indexOf(subtitleModel));
     }
 
     public void remove(int position) {
@@ -185,8 +191,6 @@ public class SubtitlesRecyclerViewAdapter extends RecyclerView.Adapter<Subtitles
         }
 
         public void bind(final SubtitleModel subtitle, final OnItemClickListener listener) {
-            //  name.setText(item.name);
-            //Picasso.with(itemView.getContext()).load(item.imageUrl).into(image);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
